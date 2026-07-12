@@ -1,0 +1,7 @@
+# Spreading the `BookDetails` fragment (defined in BookDetails.graphql)
+# instead of listing fields inline.
+query GetBook($id: ID!) {
+    book(id: $id) {
+        ...BookDetails
+    }
+}

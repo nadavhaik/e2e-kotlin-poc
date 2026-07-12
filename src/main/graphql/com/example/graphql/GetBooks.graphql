@@ -1,0 +1,7 @@
+# Same fragment reused here: both queries stay in sync automatically if the
+# fragment's field selection ever changes.
+query GetBooks {
+    books {
+        ...BookDetails
+    }
+}

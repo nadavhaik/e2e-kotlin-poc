@@ -1,0 +1,12 @@
+# A reusable GraphQL fragment: a named, reusable set of fields on a type.
+#
+# Fragments let multiple queries share the exact same field selection so you
+# don't repeat yourself, and Apollo's codegen generates a single shared
+# `BookDetails` model class that both `GetBookQuery` and `GetBooksQuery`
+# expose (via `.bookDetails`), instead of two separate near-identical models.
+fragment BookDetails on Book {
+    id
+    title
+    author
+    publishedYear
+}

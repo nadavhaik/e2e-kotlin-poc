@@ -1,0 +1,91 @@
+openapi: 3.0.3
+info:
+  title: Tasks API
+  description: Simple task management API used as a POC for OpenAPI-generated Kotlin clients.
+  version: "1.0.0"
+servers:
+  - url: http://localhost:8080
+paths:
+  /tasks:
+    get:
+      operationId: getTasks
+      summary: List all tasks
+      tags:
+        - Tasks
+      responses:
+        "200":
+          description: A list of tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+    post:
+      operationId: createTask
+      summary: Create a new task
+      tags:
+        - Tasks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewTask"
+      responses:
+        "201":
+          description: The created task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+  /tasks/{id}:
+    get:
+      operationId: getTaskById
+      summary: Get a task by id
+      tags:
+        - Tasks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The requested task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "404":
+          description: Task not found
+components:
+  schemas:
+    Task:
+      type: object
+      required:
+        - id
+        - title
+        - completed
+      properties:
+        id:
+          type: string
+          example: "1"
+        title:
+          type: string
+          example: "Write POC"
+        completed:
+          type: boolean
+          example: false
+    NewTask:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          example: "Write POC"
+        completed:
+          type: boolean
+          default: false
