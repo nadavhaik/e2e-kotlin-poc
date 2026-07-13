@@ -8,7 +8,6 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -61,11 +60,11 @@ class GraphQLBookClientTest {
                 )
         )
 
-        val response = apolloClient.query(GetBookQuery(id = "1")).execute()
+        // dataAssertNoErrors returns typed Data directly and throws if GraphQL errors are present.
+        val data = apolloClient.query(GetBookQuery(id = "1")).execute().dataAssertNoErrors
 
-        assertFalse(response.hasErrors())
         // Fields come from the reused BookDetails fragment, exposed as `.bookDetails`.
-        val book = requireNotNull(response.data?.book)
+        val book = data.book!!
         assertEquals("1", book.bookDetails.id)
         assertEquals("Kotlin in Action", book.bookDetails.title)
         assertEquals("Dmitry Jemerov", book.bookDetails.author)
@@ -107,11 +106,9 @@ class GraphQLBookClientTest {
                 )
         )
 
-        val response = apolloClient.query(GetBooksQuery()).execute()
+        val data = apolloClient.query(GetBooksQuery()).execute().dataAssertNoErrors
 
-        assertFalse(response.hasErrors())
-        val books = requireNotNull(response.data?.books)
-        assertEquals(2, books.size)
-        assertEquals(listOf("Kotlin in Action", "Effective Kotlin"), books.map { it.bookDetails.title })
+        assertEquals(2, data.books.size)
+        assertEquals(listOf("Kotlin in Action", "Effective Kotlin"), data.books.map { it.bookDetails.title })
     }
 }
