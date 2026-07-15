@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org",
+  "$id": "https://example.com/UserProfile",
+  "title": "User Profile",
+  "description": "A schema defining a registered user profile.",
+  "type": "object",
+  "properties": {
+    "username": {
+      "type": "string",
+      "minLength": 3
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "age": {
+      "type": "integer",
+      "minimum": 18,
+      "maximum": 120
+    },
+    "role": {
+      "type": "string",
+      "enum": ["admin", "moderator", "user", "guest"]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": ["username", "email", "role"]
+}
